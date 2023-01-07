@@ -135,6 +135,23 @@ void moveBoard(unsigned **&board, size_t dim, char cmd, unsigned &score) {
     addRandomValue(board, dim);
 }
 
+unsigned **createBoard(size_t dim) {
+    auto **board = new unsigned *[dim];
+    for (size_t row = 0; row < dim; ++row) {
+        board[row] = new unsigned[dim];
+    }
+    addRandomValue(board, dim);
+    addRandomValue(board, dim);
+    return board;
+}
+
+void deleteBoard(unsigned **board, size_t dim) {
+    for (size_t row = 0; row < dim; ++row) {
+        delete[] board[row];
+    }
+    delete[] board;
+}
+
 int main() {
     return 0;
 }
