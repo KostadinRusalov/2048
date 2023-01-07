@@ -81,6 +81,47 @@ void shiftRow(unsigned **&board, size_t dim, size_t rowIdx, char cmd, unsigned &
     }
 }
 
+size_t randomIdx(size_t count) {
+    return rand() % count;
+}
+
+unsigned randomValue() {
+    return 2 * (1 + rand() % 2);
+}
+
+size_t coordsToIdx(size_t row, size_t col) {
+    return row * 10 + col;
+}
+
+size_t *idxToCoords(size_t idx) {
+    auto *coords = new size_t[2];
+    coords[1] = idx % 10;
+    coords[0] = (idx / 10);
+    return coords;
+}
+
+unsigned *getEmptySquares(unsigned **board, size_t dim, size_t &count) {
+    auto *emptySquares = new unsigned[dim * dim];
+    count = 0;
+    for (size_t row = 0; row < dim; ++row) {
+        for (size_t col = 0; col < dim; ++col) {
+            if (board[row][col] == 0) {
+                emptySquares[count++] = coordsToIdx(row, col);
+            }
+        }
+    }
+    return emptySquares;
+}
+
+void addRandomValue(unsigned **&board, size_t dim) {
+    size_t emptyCount;
+    unsigned *emptySquares = getEmptySquares(board, dim, emptyCount);
+    size_t *coords = idxToCoords(emptySquares[randomIdx(emptyCount)]);
+    board[coords[0]][coords[1]] = randomValue();
+    delete[] emptySquares;
+    delete[] coords;
+}
+
 void moveBoard(unsigned **&board, size_t dim, char cmd, unsigned &score) {
     if (cmd == MOVE_UP || cmd == MOVE_DOWN) {
         for (size_t colIdx = 0; colIdx < dim; ++colIdx) {
@@ -91,6 +132,7 @@ void moveBoard(unsigned **&board, size_t dim, char cmd, unsigned &score) {
             shiftRow(board, dim, rowIdx, cmd, score);
         }
     }
+    addRandomValue(board, dim);
 }
 
 int main() {
