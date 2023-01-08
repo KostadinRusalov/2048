@@ -45,8 +45,8 @@ void shiftColumn(unsigned **&board, size_t dim, size_t colIdx, char cmd, unsigne
         }
 
         if (board[currIdx][colIdx] != 0 && emptySquares > 0) {
-            swap(board[currIdx][colIdx], board[currIdx - direction * emptySquares][colIdx]);
             lastNonZeroIdx = (int) currIdx - direction * emptySquares;
+            swap(board[currIdx][colIdx], board[lastNonZeroIdx][colIdx]);
             --emptySquares;
             changed = true;
         }
@@ -80,8 +80,8 @@ void shiftRow(unsigned **&board, size_t dim, size_t rowIdx, char cmd, unsigned &
         }
 
         if (board[rowIdx][currIdx] != 0 && emptySquares > 0) {
-            swap(board[rowIdx][currIdx], board[rowIdx][currIdx - direction * emptySquares]);
             lastNonZeroIdx = (int) currIdx - direction * emptySquares;
+            swap(board[rowIdx][currIdx], board[rowIdx][lastNonZeroIdx]);
             --emptySquares;
             changed = true;
         }
@@ -103,11 +103,11 @@ size_t coordsToIdx(size_t row, size_t col) {
 size_t *idxToCoords(size_t idx) {
     auto *coords = new size_t[2];
     coords[1] = idx % 10;
-    coords[0] = (idx / 10);
+    coords[0] = idx / 10;
     return coords;
 }
 
-unsigned *getEmptySquares(unsigned **board, size_t dim, size_t &count) {
+unsigned *getEmptySquares(const unsigned **board, size_t dim, size_t &count) {
     auto *emptySquares = new unsigned[dim * dim];
     count = 0;
     for (size_t row = 0; row < dim; ++row) {
@@ -120,7 +120,7 @@ unsigned *getEmptySquares(unsigned **board, size_t dim, size_t &count) {
     return emptySquares;
 }
 
-bool availableMoves(unsigned **&board, size_t dim) {
+bool availableMoves(const unsigned **board, size_t dim) {
     for (size_t row = 0; row < dim - 1; ++row) {
         for (size_t col = 0; col < dim - 1; ++col) {
             if (board[row][col] == board[row][col + 1]) {
@@ -146,13 +146,13 @@ bool availableMoves(unsigned **&board, size_t dim) {
 
 void addRandomValue(unsigned **&board, size_t dim, bool &finished) {
     size_t emptyCount;
-    unsigned *emptySquares = getEmptySquares(board, dim, emptyCount);
+    unsigned *emptySquares = getEmptySquares((const unsigned **) board, dim, emptyCount);
     size_t *coords = idxToCoords(emptySquares[randomIdx(emptyCount)]);
     board[coords[0]][coords[1]] = randomValue();
     delete[] emptySquares;
     delete[] coords;
     if (emptyCount == 1) {
-        finished = !availableMoves(board, dim);
+        finished = !availableMoves((const unsigned **) board, dim);
     }
 }
 
@@ -175,7 +175,7 @@ void moveBoard(unsigned **&board, size_t dim, char cmd, unsigned &score, bool &f
 unsigned **createBoard(size_t dim) {
     auto **board = new unsigned *[dim];
     for (size_t row = 0; row < dim; ++row) {
-        board[row] = new unsigned[dim];
+        board[row] = new unsigned[dim]{};
     }
     return board;
 }
@@ -205,7 +205,8 @@ void printSpaces(int count) {
     }
 }
 
-void printBoard(unsigned **board, size_t dim, const char nickname[], unsigned score) {
+void printBoard(const unsigned **board, size_t dim, const char *nickname, unsigned score) {
+    clearConsole();
     std::cout << nickname << "'s score: " << score << '\n';
     for (size_t row = 0; row < dim; ++row) {
         for (size_t col = 0; col < dim - 1; ++col) {
@@ -213,7 +214,6 @@ void printBoard(unsigned **board, size_t dim, const char nickname[], unsigned sc
             printSpaces(DEFAULT_WIDTH - digitCount(board[row][col]));
         }
         std::cout << board[row][dim - 1] << '\n';
-
     }
 }
 
