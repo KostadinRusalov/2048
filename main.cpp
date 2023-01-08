@@ -229,11 +229,11 @@ void startGame() {
     std::cin >> nickname;
 
     size_t dim;
-    std::cout << "enter dimension (between 4 and 10) : ";
+    std::cout << "enter dimension (between 4 and 10): ";
     std::cin >> dim;
     while (dim < LOWER_BOUND || dim > UPPER_BOUND) {
-        std::cout << "invalid dimension!\n";
-        std::cout << "enter dimension (between 4 and 10) : ";
+        std::cout << "invalid dimension\n";
+        std::cout << "enter dimension (between 4 and 10): ";
         std::cin >> dim;
     }
 
