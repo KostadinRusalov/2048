@@ -1,7 +1,5 @@
 #include "gameLogic.h"
-#include <iostream>
-
-typedef unsigned tile;
+#include "helper.h"
 
 int DEFAULT_WIDTH = 6;
 
@@ -10,19 +8,13 @@ const char MOVE_DOWN = 's';
 const char MOVE_LEFT = 'a';
 const char MOVE_RIGHT = 'd';
 
-tile merge(tile &x, tile &y) {
+unsigned mergeTiles(unsigned &x, unsigned &y) {
     y += x;
     x = 0;
     return y;
 }
 
-void swap(tile &x, tile &y) {
-    unsigned temp = x;
-    x = y;
-    y = temp;
-}
-
-void shiftColumn(tile **board, size_t dim, size_t colIdx, char cmd, unsigned &score, bool &changed) {
+void shiftColumn(unsigned **board, size_t dim, size_t colIdx, char cmd, unsigned &score, bool &changed) {
     if (board == nullptr || colIdx > dim || (cmd != MOVE_UP && cmd != MOVE_DOWN)) {
         return;
     }
@@ -43,7 +35,7 @@ void shiftColumn(tile **board, size_t dim, size_t colIdx, char cmd, unsigned &sc
         if (lastNonZeroIdx == -1 || board[currIdx][colIdx] != board[lastNonZeroIdx][colIdx]) {
             lastNonZeroIdx = (int) currIdx;
         } else if (board[currIdx][colIdx] == board[lastNonZeroIdx][colIdx]) {
-            score += merge(board[currIdx][colIdx], board[lastNonZeroIdx][colIdx]);
+            score += mergeTiles(board[currIdx][colIdx], board[lastNonZeroIdx][colIdx]);
             lastNonZeroIdx = -1;
             changed = true;
         }
@@ -57,7 +49,7 @@ void shiftColumn(tile **board, size_t dim, size_t colIdx, char cmd, unsigned &sc
     }
 }
 
-void shiftRow(tile **board, size_t dim, size_t rowIdx, char cmd, unsigned &score, bool &changed) {
+void shiftRow(unsigned **board, size_t dim, size_t rowIdx, char cmd, unsigned &score, bool &changed) {
     if (board == nullptr || rowIdx > dim || (cmd != MOVE_LEFT && cmd != MOVE_RIGHT)) {
         return;
     }
@@ -78,7 +70,7 @@ void shiftRow(tile **board, size_t dim, size_t rowIdx, char cmd, unsigned &score
         if (lastNonZeroIdx == -1 || board[rowIdx][currIdx] != board[rowIdx][lastNonZeroIdx]) {
             lastNonZeroIdx = (int) currIdx;
         } else if (board[rowIdx][currIdx] == board[rowIdx][lastNonZeroIdx]) {
-            score += merge(board[rowIdx][currIdx], board[rowIdx][lastNonZeroIdx]);
+            score += mergeTiles(board[rowIdx][currIdx], board[rowIdx][lastNonZeroIdx]);
             lastNonZeroIdx = -1;
             changed = true;
         }
@@ -96,7 +88,7 @@ size_t randomIdx(size_t count) {
     return rand() % count;
 }
 
-tile randomTile() {
+unsigned randomTile() {
     return 2 * (1 + rand() % 2);
 }
 
@@ -111,8 +103,8 @@ size_t *idxToCoords(size_t idx) {
     return coords;
 }
 
-tile *getEmptyTiles(const tile **board, size_t dim, size_t &count) {
-    auto *emptyTiles = new tile[dim * dim];
+unsigned *getEmptyTiles(const unsigned **board, size_t dim, size_t &count) {
+    auto *emptyTiles = new unsigned[dim * dim];
     count = 0;
     for (size_t row = 0; row < dim; ++row) {
         for (size_t col = 0; col < dim; ++col) {
@@ -124,7 +116,7 @@ tile *getEmptyTiles(const tile **board, size_t dim, size_t &count) {
     return emptyTiles;
 }
 
-bool availableMoves(const tile **board, size_t dim) {
+bool availableMoves(const unsigned **board, size_t dim) {
     for (size_t row = 0; row < dim - 1; ++row) {
         for (size_t col = 0; col < dim - 1; ++col) {
             if (board[row][col] == board[row][col + 1]) {
@@ -148,19 +140,19 @@ bool availableMoves(const tile **board, size_t dim) {
     return false;
 }
 
-void addRandomTile(tile **board, size_t dim, bool &finished) {
+void addRandomTile(unsigned **board, size_t dim, bool &finished) {
     size_t emptyCount;
-    unsigned *emptySquares = getEmptyTiles((const tile **) board, dim, emptyCount);
+    unsigned *emptySquares = getEmptyTiles((const unsigned **) board, dim, emptyCount);
     size_t *coords = idxToCoords(emptySquares[randomIdx(emptyCount)]);
     board[coords[0]][coords[1]] = randomTile();
     delete[] emptySquares;
     delete[] coords;
     if (emptyCount == 1) {
-        finished = !availableMoves((const tile **) board, dim);
+        finished = !availableMoves((const unsigned **) board, dim);
     }
 }
 
-void moveBoard(tile **board, size_t dim, char cmd, unsigned &score, bool &finished) {
+void moveBoard(unsigned **board, size_t dim, char cmd, unsigned &score, bool &finished) {
     bool changed = false;
     if (cmd == MOVE_UP || cmd == MOVE_DOWN) {
         for (size_t colIdx = 0; colIdx < dim; ++colIdx) {
@@ -175,41 +167,7 @@ void moveBoard(tile **board, size_t dim, char cmd, unsigned &score, bool &finish
         addRandomTile(board, dim, finished);
     }
 }
-
-unsigned **createBoard(size_t dim) {
-    auto **board = new unsigned *[dim];
-    for (size_t row = 0; row < dim; ++row) {
-        board[row] = new unsigned[dim]{};
-    }
-    return board;
-}
-
-void deleteBoard(tile **board, size_t dim) {
-    for (size_t row = 0; row < dim; ++row) {
-        delete[] board[row];
-    }
-    delete[] board;
-}
-
-void clearConsole() {
-    std::cout << "\033[:H\033[:J";
-}
-
-int digitCount(unsigned value) {
-    int count = 1;
-    while (value /= 10) {
-        count++;
-    }
-    return count;
-}
-
-void printSpaces(int count) {
-    while (count--) {
-        std::cout << ' ';
-    }
-}
-
-void printBoard(const tile **board, size_t dim, const char *nickname, unsigned score) {
+void printBoard(const unsigned **board, size_t dim, const char *nickname, unsigned score) {
     clearConsole();
     std::cout << nickname << "'s score: " << score << '\n';
     for (size_t row = 0; row < dim; ++row) {
