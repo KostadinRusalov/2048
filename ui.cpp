@@ -24,3 +24,13 @@ bool isLeaderboard(const char *command) {
 void wellPlayed(const char *nickname, unsigned score) {
     std::cout << "well played " << nickname << "!\nyour score is " << score << std::endl;
 }
+
+void emptyLeaderboard() {
+    std::cout << "leaderboard is empty" << std::endl;
+}
+
+void printScores(const char **nicknames, const unsigned *scores, size_t count) {
+    for (size_t idx = 0; idx < count; ++idx) {
+        std::cout << idx + 1 << ". " << nicknames[idx] << "'s high score: " << scores[idx] << std::endl;
+    }
+}

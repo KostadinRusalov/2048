@@ -23,9 +23,12 @@ const char ENTER_NICKNAME_MESSAGE[] = "enter nickname: ";
 const char ENTER_DIMENSION_MESSAGE[] = "enter dimension (between 4 and 10): ";
 const char INVALID_DIMENSION_MESSAGE[] = "invalid dimension!\n";
 
+
 void showMenu();
 
 void invalidCommand();
+
+void emptyLeaderboard();
 
 bool isQuit(const char *);
 
@@ -34,5 +37,7 @@ bool isStartGame(const char *);
 bool isLeaderboard(const char *);
 
 void wellPlayed(const char *, unsigned);
+
+void printScores(const char **, const unsigned *, size_t);
 
 #endif

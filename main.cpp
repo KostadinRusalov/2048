@@ -83,6 +83,7 @@ void showLeaderboard() {
         std::cout << ENTER_DIMENSION_MESSAGE;
         std::cin >> dim;
     }
+
     size_t count = 0;
     auto nicknames = allocateMatrix(MAX_NICKNAMES_SCORES_COUNT, MAX_NICKNAME_LENGTH);
     auto scores = new unsigned[MAX_NICKNAMES_SCORES_COUNT];
@@ -90,13 +91,11 @@ void showLeaderboard() {
     getNicknamesScores(dim, nicknames, scores, count);
 
     if (count == 0) {
-        std::cout << "leaderboard is empty\n";
+        emptyLeaderboard();
     } else {
-        for (size_t idx = 0; idx < count; ++idx) {
-            std::cout << idx + 1 << ". " << nicknames[idx] << "'s high score: " << scores[idx] << std::endl;
-        }
+        printScores((const char **) nicknames, (const unsigned *) scores, count);
     }
-    std::cout << std::endl;
+
     deallocateMatrix(nicknames, MAX_NICKNAMES_SCORES_COUNT);
     delete[] scores;
 }
