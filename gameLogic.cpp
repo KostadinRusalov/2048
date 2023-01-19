@@ -179,7 +179,6 @@ void printBoard(const unsigned **board, size_t dim, const char *nickname, unsign
             if (digits > DEFAULT_WIDTH) {
                 DEFAULT_WIDTH += 2;
             }
-
             std::cout << tile;
             printSpaces(DEFAULT_WIDTH - digits);
         }
