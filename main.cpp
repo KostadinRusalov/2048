@@ -68,7 +68,10 @@ void startGame() {
         }
         std::cin >> command;
     }
+    appendLeaderboard(dim, nickname, score);
+
     deleteBoard(board, dim);
+
     wellPlayed(nickname, score);
 }
 
