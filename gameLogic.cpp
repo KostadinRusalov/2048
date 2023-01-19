@@ -173,8 +173,15 @@ void printBoard(const unsigned **board, size_t dim, const char *nickname, unsign
     std::cout << nickname << "'s score: " << score << '\n';
     for (size_t row = 0; row < dim; ++row) {
         for (size_t col = 0; col < dim - 1; ++col) {
-            std::cout << board[row][col];
-            printSpaces(DEFAULT_WIDTH - digitCount(board[row][col]));
+            unsigned tile = board[row][col];
+            int digits = digitCount(tile);
+
+            if (digits > DEFAULT_WIDTH) {
+                DEFAULT_WIDTH += 2;
+            }
+
+            std::cout << tile;
+            printSpaces(DEFAULT_WIDTH - digits);
         }
         std::cout << board[row][dim - 1] << '\n';
     }

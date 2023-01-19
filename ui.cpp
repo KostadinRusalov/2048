@@ -31,6 +31,7 @@ void emptyLeaderboard() {
 
 void printScores(const char **nicknames, const unsigned *scores, size_t count) {
     for (size_t idx = 0; idx < count; ++idx) {
-        std::cout << idx + 1 << ". " << nicknames[idx] << "'s high score: " << scores[idx] << std::endl;
+        std::cout << idx + 1 << ". " << nicknames[idx] << "'s high score: " << scores[idx] << '\n';
     }
+    std::cout << std::endl;
 }

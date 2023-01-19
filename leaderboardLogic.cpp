@@ -114,6 +114,7 @@ void appendLeaderboard(size_t dim, char *nickname, unsigned score) {
     leaderboardFile.close();
 
     delete[] filename;
+
     delete[] scores;
     deallocateMatrix(nicknames, MAX_NICKNAMES_SCORES_COUNT);
 }
