@@ -1,3 +1,17 @@
+/**
+ *
+ * Solution to course project # 4
+ * Introduction to programming course
+ * Faculty of Mathematics and Informatics of Sofia University
+ * Winter semester 2022/2023
+ *
+ * @author Kostadin Rusalov
+ * @idnumber 2MI0600244
+ * @compiler GCC
+ *
+ * file for ui functions
+ *
+*/
 #include "ui.h"
 #include "helper.h"
 
