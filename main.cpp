@@ -66,6 +66,8 @@ void startGame() {
         if (finished) {
             break;
         }
+        std::cin.clear();
+        std::cin.ignore();
         std::cin >> command;
     }
 
