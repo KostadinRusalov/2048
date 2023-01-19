@@ -20,10 +20,9 @@ int main() {
         } else if (isLeaderboard(command)) {
             showLeaderboard();
         } else {
-            std::cout << INVALID_COMMAND_MESSAGE << std::endl;
+            invalidCommand();
         }
         showMenu();
-        std::cin.clear();
         std::cin.ignore();
         std::cin.getline(command, COMMAND_LEN);
     }
@@ -69,7 +68,7 @@ void startGame() {
         std::cin >> command;
     }
     deleteBoard(board, dim);
-    std::cout << "well played " << nickname << "!\nyour score is " << score << std::endl;
+    wellPlayed(nickname, score);
 }
 
 void showLeaderboard() {
