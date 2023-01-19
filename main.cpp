@@ -89,8 +89,8 @@ void showLeaderboard() {
     }
 
     size_t count = 0;
-    auto nicknames = allocateMatrix(MAX_NICKNAMES_SCORES_COUNT, MAX_NICKNAME_LENGTH);
-    auto scores = new unsigned[MAX_NICKNAMES_SCORES_COUNT];
+    char **nicknames = allocateMatrix(MAX_NICKNAMES_SCORES_COUNT, MAX_NICKNAME_LENGTH);
+    unsigned *scores = new unsigned[MAX_NICKNAMES_SCORES_COUNT];
 
     getNicknamesScores(dim, nicknames, scores, count);
 
