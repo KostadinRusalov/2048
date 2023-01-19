@@ -97,14 +97,14 @@ size_t coordsToIdx(size_t row, size_t col) {
 }
 
 size_t *idxToCoords(size_t idx) {
-    auto *coords = new size_t[2];
+    size_t *coords = new size_t[2];
     coords[1] = idx % 10;
     coords[0] = idx / 10;
     return coords;
 }
 
 unsigned *getEmptyTiles(const unsigned **board, size_t dim, size_t &count) {
-    auto *emptyTiles = new unsigned[dim * dim];
+    unsigned *emptyTiles = new unsigned[dim * dim];
     count = 0;
     for (size_t row = 0; row < dim; ++row) {
         for (size_t col = 0; col < dim; ++col) {

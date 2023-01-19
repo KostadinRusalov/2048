@@ -30,7 +30,7 @@ void swap(char *str1, char *str2) {
 }
 
 unsigned **createBoard(size_t dim) {
-    auto **board = new unsigned *[dim];
+    unsigned **board = new unsigned *[dim];
     for (size_t row = 0; row < dim; ++row) {
         board[row] = new unsigned[dim]{};
     }
@@ -74,7 +74,7 @@ bool isValid(size_t dim) {
 }
 
 char **allocateMatrix(size_t rows, size_t cols) {
-    auto matrix = new char *[rows];
+    char** matrix = new char *[rows];
     for (size_t col = 0; col < rows; ++col) {
         matrix[col] = new char[cols];
     }
