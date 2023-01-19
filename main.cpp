@@ -1,4 +1,5 @@
 #include <iostream>
+#include "leaderboardLogic.h"
 #include "gameLogic.h"
 #include "helper.h"
 #include "ui.h"
@@ -72,5 +73,30 @@ void startGame() {
 }
 
 void showLeaderboard() {
+    clearConsole();
+    size_t dim;
+    std::cout << ENTER_DIMENSION_MESSAGE;
+    std::cin >> dim;
 
+    while (dim < DIM_LOWER_BOUND || dim > DIM_UPPER_BOUND) {
+        std::cout << INVALID_DIMENSION_MESSAGE;
+        std::cout << ENTER_DIMENSION_MESSAGE;
+        std::cin >> dim;
+    }
+    size_t count = 0;
+    auto nicknames = allocateMatrix(MAX_NICKNAMES_SCORES_COUNT, MAX_NICKNAME_LENGTH);
+    auto scores = new unsigned[MAX_NICKNAMES_SCORES_COUNT];
+
+    getNicknamesScores(dim, nicknames, scores, count);
+
+    if (count == 0) {
+        std::cout << "leaderboard is empty\n";
+    } else {
+        for (size_t idx = 0; idx < count; ++idx) {
+            std::cout << idx + 1 << ". " << nicknames[idx] << "'s high score: " << scores[idx] << std::endl;
+        }
+    }
+    std::cout << std::endl;
+    deallocateMatrix(nicknames, MAX_NICKNAMES_SCORES_COUNT);
+    delete[] scores;
 }
