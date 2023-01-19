@@ -167,6 +167,7 @@ void moveBoard(unsigned **board, size_t dim, char cmd, unsigned &score, bool &fi
         addRandomTile(board, dim, finished);
     }
 }
+
 void printBoard(const unsigned **board, size_t dim, const char *nickname, unsigned score) {
     clearConsole();
     std::cout << nickname << "'s score: " << score << '\n';
@@ -179,45 +180,45 @@ void printBoard(const unsigned **board, size_t dim, const char *nickname, unsign
     }
 }
 
-void startGame() {
-    const size_t DEFAULT_NICKNAME_LENGTH = 20;
-    const size_t LOWER_BOUND = 4, UPPER_BOUND = 10;
-    srand(time(nullptr));
-    clearConsole();
-
-    char nickname[DEFAULT_NICKNAME_LENGTH];
-    std::cout << "enter nickname: ";
-    std::cin >> nickname;
-
-    size_t dim;
-    std::cout << "enter dimension (between 4 and 10): ";
-    std::cin >> dim;
-    while (dim < LOWER_BOUND || dim > UPPER_BOUND) {
-        std::cout << "invalid dimension\n";
-        std::cout << "enter dimension (between 4 and 10): ";
-        std::cin >> dim;
-    }
-
-    unsigned score = 0;
-    unsigned **board = createBoard(dim);
-    bool finished = false;
-    addRandomTile(board, dim, finished);
-    addRandomTile(board, dim, finished);
-    printBoard((const unsigned **) board, dim, nickname, score);
-
-    char cmd;
-    std::cin >> cmd;
-
-    while (cmd != 'q') {
-        moveBoard(board, dim, cmd, score, finished);
-        printBoard((const unsigned **) board, dim, nickname, score);
-        if (finished) {
-            break;
-        }
-        std::cin >> cmd;
-    }
-
-    std::cout << "well played " << nickname << "\nyour score is " << score;
-    deleteBoard(board, dim);
-}
+//void startGame() {
+//    const size_t DEFAULT_NICKNAME_LENGTH = 20;
+//    const size_t LOWER_BOUND = 4, UPPER_BOUND = 10;
+//    srand(time(nullptr));
+//    clearConsole();
+//
+//    char nickname[DEFAULT_NICKNAME_LENGTH];
+//    std::cout << "enter nickname: ";
+//    std::cin >> nickname;
+//
+//    size_t dim;
+//    std::cout << "enter dimension (between 4 and 10): ";
+//    std::cin >> dim;
+//    while (dim < LOWER_BOUND || dim > UPPER_BOUND) {
+//        std::cout << "invalid dimension\n";
+//        std::cout << "enter dimension (between 4 and 10): ";
+//        std::cin >> dim;
+//    }
+//
+//    unsigned score = 0;
+//    unsigned **board = createBoard(dim);
+//    bool finished = false;
+//    addRandomTile(board, dim, finished);
+//    addRandomTile(board, dim, finished);
+//    printBoard((const unsigned **) board, dim, nickname, score);
+//
+//    char cmd;
+//    std::cin >> cmd;
+//
+//    while (cmd != 'q') {
+//        moveBoard(board, dim, cmd, score, finished);
+//        printBoard((const unsigned **) board, dim, nickname, score);
+//        if (finished) {
+//            break;
+//        }
+//        std::cin >> cmd;
+//    }
+//
+//    std::cout << "well played " << nickname << "\nyour score is " << score;
+//    deleteBoard(board, dim);
+//}
 
