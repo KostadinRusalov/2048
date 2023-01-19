@@ -19,10 +19,16 @@ const char COMMAND_MENU[] = "1. start game\n"
                             "2. leaderboard\n"
                             "3. quit";
 
+const char ENTER_NICKNAME_MESSAGE[] = "enter nickname: ";
+const char ENTER_DIMENSION_MESSAGE[] = "enter dimension (between 4 and 10): ";
+const char INVALID_DIMENSION_MESSAGE[] = "invalid dimension\n";
+
 void showMenu();
 
-bool isQuit(const char*);
-bool isStartGame(const char*);
-bool isLeaderboard(const char*);
+bool isQuit(const char *);
+
+bool isStartGame(const char *);
+
+bool isLeaderboard(const char *);
 
 #endif //INC_2048_UI_H
