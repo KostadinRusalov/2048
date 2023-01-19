@@ -46,7 +46,7 @@ void swap(char *str1, char *str2) {
 unsigned **createBoard(size_t dim) {
     unsigned **board = new unsigned *[dim];
     for (size_t row = 0; row < dim; ++row) {
-        board[row] = new unsigned[dim]{};
+        board[row] = new unsigned[dim]();
     }
     return board;
 }

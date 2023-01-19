@@ -27,7 +27,7 @@ char *getFilename(size_t dim) {
     if (!isValid(dim)) {
         return nullptr;
     }
-    char *filename = new char[MAX_FILENAME_LEN]{};
+    char *filename = new char[MAX_FILENAME_LEN]();
     concat(filename, DIRECTORY);
     if (dim == DIM_UPPER_BOUND) {
         char strDim[] = "10";
