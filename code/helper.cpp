@@ -14,10 +14,6 @@
 */
 #include "helper.h"
 
-void clearConsole() {
-    std::cout << "\033[:H\033[:J";
-}
-
 void swap(unsigned &x, unsigned &y) {
     unsigned temp = x;
     x = y;

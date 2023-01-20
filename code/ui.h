@@ -44,10 +44,14 @@ const char INVALID_NICKNAME_MESSAGE[] = "nickname must be less than 15 character
 const char ENTER_DIMENSION_MESSAGE[] = "enter dimension (between 4 and 10): ";
 const char INVALID_DIMENSION_MESSAGE[] = "invalid dimension!\n";
 
-
 void showMenu();
 
 void clearInput();
+
+void startGame();
+
+void showLeaderboard();
+
 
 size_t enterDimension();
 

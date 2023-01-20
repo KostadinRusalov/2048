@@ -14,10 +14,17 @@
 */
 #include "ui.h"
 #include "helper.h"
+#include "gameLogic.h"
+#include "leaderboardLogic.h"
 
 int BOARD_TILE_WIDTH = 6;
 
+void clearConsole() {
+    std::cout << "\033[:H\033[:J";
+}
+
 void showMenu() {
+    clearConsole();
     std::cout << COMMAND_MENU << std::endl;
 }
 
@@ -103,4 +110,61 @@ void printBoard(const unsigned **board, size_t dim, const char *nickname, unsign
         }
         std::cout << board[row][dim - 1] << std::endl;
     }
+}
+
+void startGame() {
+    srand(time(nullptr));
+    clearConsole();
+
+    char nickname[MAX_NICKNAME_LENGTH];
+    enterNickname(nickname);
+
+    size_t dim = enterDimension();
+
+    unsigned score = 0;
+    bool finished = false;
+
+    // initialize board with two random tiles
+    unsigned **board = createBoard(dim);
+    addRandomTile(board, dim, finished);
+    addRandomTile(board, dim, finished);
+
+    printBoard((const unsigned **) board, dim, nickname, score);
+
+    char command;
+    std::cin >> command;
+
+    while (command != QUIT) {
+        moveBoard(board, dim, command, score, finished);
+        printBoard((const unsigned **) board, dim, nickname, score);
+        if (finished) {
+            break;
+        }
+        clearInput();
+        std::cin >> command;
+    }
+
+    appendLeaderboard(dim, nickname, score);
+    deleteBoard(board, dim);
+    wellPlayed(nickname, score);
+}
+
+void showLeaderboard() {
+    clearConsole();
+    size_t dim = enterDimension();
+    size_t count = 0;
+
+    char **nicknames = allocateMatrix(MAX_NICKNAMES_SCORES_COUNT, MAX_NICKNAME_LENGTH);
+    unsigned *scores = new unsigned[MAX_NICKNAMES_SCORES_COUNT];
+
+    getNicknamesScores(dim, nicknames, scores, count);
+
+    if (count == 0) {
+        emptyLeaderboardMessage();
+    } else {
+        printScores((const char **) nicknames, (const unsigned *) scores, count);
+    }
+
+    deallocateMatrix(nicknames, MAX_NICKNAMES_SCORES_COUNT);
+    delete[] scores;
 }

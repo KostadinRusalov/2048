@@ -21,8 +21,6 @@ const size_t MAX_NICKNAME_LENGTH = 16;
 const size_t DIM_LOWER_BOUND = 4;
 const size_t DIM_UPPER_BOUND = 10;
 
-void clearConsole();
-
 void copy(const char *, char *);
 
 void swap(unsigned &, unsigned &);
