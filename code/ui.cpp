@@ -19,6 +19,24 @@
 
 int BOARD_TILE_WIDTH = 6;
 
+const char START_GAME_COMMAND[] = "start game";
+const char LEADERBOARD_COMMAND[] = "leaderboard";
+const char QUIT_COMMAND[] = "quit";
+
+const char START_GAME_COMMAND_N[] = "1";
+const char LEADERBOARD_COMMAND_N[] = "2";
+const char QUIT_COMMAND_N[] = "3";
+
+const char COMMAND_MENU[] = "1. start game\n"
+                            "2. leaderboard\n"
+                            "3. quit";
+
+const char ENTER_NICKNAME_MESSAGE[] = "enter nickname: ";
+const char INVALID_NICKNAME_MESSAGE[] = "nickname must be less than 15 characters!\n";
+
+const char ENTER_DIMENSION_MESSAGE[] = "enter dimension (between 4 and 10): ";
+const char INVALID_DIMENSION_MESSAGE[] = "invalid dimension!\n";
+
 void clearConsole() {
     std::cout << "\033[:H\033[:J";
 }
@@ -28,12 +46,14 @@ void showMenu() {
 }
 
 void clearInput() {
+    const int IGNORE_COUNT = 256;
+    const char IGNORE_DEL = '\n';
     std::cin.clear();
     std::cin.ignore(IGNORE_COUNT, IGNORE_DEL);
 }
 
 void invalidCommandMessage(const char *command) {
-    std::cout << command << INVALID_COMMAND_MESSAGE << std::endl;
+    std::cout << command << " is invalid command!" << std::endl;
 }
 
 bool isQuit(const char *command) {
@@ -112,6 +132,8 @@ void printBoard(const unsigned **board, size_t dim, const char *nickname, unsign
 }
 
 void startGame() {
+    const char QUIT = 'q';
+
     srand(time(nullptr));
     clearConsole();
 
