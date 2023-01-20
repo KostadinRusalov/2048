@@ -32,8 +32,8 @@ void clearInput() {
     std::cin.ignore(IGNORE_COUNT, IGNORE_DEL);
 }
 
-void invalidCommandMessage() {
-    std::cout << INVALID_COMMAND_MESSAGE;
+void invalidCommandMessage(const char *command) {
+    std::cout << command << INVALID_COMMAND_MESSAGE << std::endl;
 }
 
 bool isQuit(const char *command) {
@@ -49,7 +49,7 @@ bool isLeaderboard(const char *command) {
 }
 
 void wellPlayed(const char *nickname, unsigned score) {
-    std::cout << "well played " << nickname << "!\nyour score is " << score << std::endl;
+    std::cout << "well played " << nickname << "!\nyour score is " << score << std::endl << std::endl;
 }
 
 void emptyLeaderboardMessage() {
@@ -146,6 +146,7 @@ void startGame() {
     appendLeaderboard(dim, nickname, score);
     deleteBoard(board, dim);
     wellPlayed(nickname, score);
+    clearInput();
 }
 
 void showLeaderboard() {
@@ -163,7 +164,8 @@ void showLeaderboard() {
     } else {
         printScores((const char **) nicknames, (const unsigned *) scores, count);
     }
-
+    std::cout << std::endl;
     deallocateMatrix(nicknames, MAX_NICKNAMES_SCORES_COUNT);
     delete[] scores;
+    clearInput();
 }

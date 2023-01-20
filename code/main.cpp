@@ -27,10 +27,9 @@ int main() {
         } else if (isLeaderboard(command)) {
             showLeaderboard();
         } else {
-            invalidCommandMessage();
+            invalidCommandMessage(command);
         }
         showMenu();
-        clearInput();
         std::cin.getline(command, COMMAND_LEN);
     }
     return 0;

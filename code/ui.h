@@ -22,7 +22,7 @@ const char IGNORE_DEL = '\n';
 
 const int COMMAND_LEN = 12;
 
-const char INVALID_COMMAND_MESSAGE[] = "invalid command!\n";
+const char INVALID_COMMAND_MESSAGE[] = " is invalid command!";
 
 const char START_GAME_COMMAND[] = "start game";
 const char LEADERBOARD_COMMAND[] = "leaderboard";
@@ -56,7 +56,7 @@ void showLeaderboard();
 
 size_t enterDimension();
 
-void invalidCommandMessage();
+void invalidCommandMessage(const char *);
 
 void emptyLeaderboardMessage();
 
