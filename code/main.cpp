@@ -38,7 +38,7 @@ int main() {
             invalidCommand();
         }
         showMenu();
-        std::cin.ignore(IGNORE_COUNT,IGNORE_DEL);
+        clearInput();
         std::cin.getline(command, COMMAND_LEN);
     }
 
@@ -49,17 +49,25 @@ void startGame() {
     srand(time(nullptr));
     clearConsole();
 
-    char nickname[MAX_NICKNAME_LENGTH];
     std::cout << ENTER_NICKNAME_MESSAGE;
-    std::cin >> nickname;
+    char nickname[MAX_NICKNAME_LENGTH];
+    std::cin.getline(nickname, MAX_NICKNAME_LENGTH);
 
-    size_t dim;
+    while (std::cin.fail()) {
+        std::cout << INVALID_NICKNAME_MESSAGE;
+        std::cout << ENTER_NICKNAME_MESSAGE;
+        clearInput();
+        std::cin.getline(nickname, MAX_NICKNAME_LENGTH);
+    }
+
     std::cout << ENTER_DIMENSION_MESSAGE;
+    size_t dim;
     std::cin >> dim;
 
-    while (dim < DIM_LOWER_BOUND || dim > DIM_UPPER_BOUND) {
+    while (std::cin.fail() || dim < DIM_LOWER_BOUND || dim > DIM_UPPER_BOUND) {
         std::cout << INVALID_DIMENSION_MESSAGE;
         std::cout << ENTER_DIMENSION_MESSAGE;
+        clearInput();
         std::cin >> dim;
     }
 
@@ -80,7 +88,7 @@ void startGame() {
         if (finished) {
             break;
         }
-        std::cin.ignore(IGNORE_COUNT,IGNORE_DEL);
+        clearInput();
         std::cin >> command;
     }
 
@@ -95,9 +103,10 @@ void showLeaderboard() {
     std::cout << ENTER_DIMENSION_MESSAGE;
     std::cin >> dim;
 
-    while (dim < DIM_LOWER_BOUND || dim > DIM_UPPER_BOUND) {
+    while (std::cin.fail() || dim < DIM_LOWER_BOUND || dim > DIM_UPPER_BOUND) {
         std::cout << INVALID_DIMENSION_MESSAGE;
         std::cout << ENTER_DIMENSION_MESSAGE;
+        clearInput();
         std::cin >> dim;
     }
 

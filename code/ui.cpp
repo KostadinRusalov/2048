@@ -21,6 +21,11 @@ void showMenu() {
     std::cout << COMMAND_MENU << std::endl;
 }
 
+void clearInput() {
+    std::cin.clear();
+    std::cin.ignore(IGNORE_COUNT, IGNORE_DEL);
+}
+
 void invalidCommand() {
     std::cout << INVALID_COMMAND_MESSAGE;
 }

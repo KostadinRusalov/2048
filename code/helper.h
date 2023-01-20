@@ -17,7 +17,7 @@
 #ifndef INC_2048_HELPER_H
 #define INC_2048_HELPER_H
 
-const size_t MAX_NICKNAME_LENGTH = 12;
+const size_t MAX_NICKNAME_LENGTH = 16;
 const size_t DIM_LOWER_BOUND = 4;
 const size_t DIM_UPPER_BOUND = 10;
 
