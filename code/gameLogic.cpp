@@ -42,10 +42,12 @@ void shiftColumn(unsigned **board, size_t dim, size_t colIdx, char command, unsi
         if (board[currIdx - direction][colIdx] == 0) {
             ++emptyTiles;
         }
+
         unsigned &current = board[currIdx][colIdx];
         if (current == 0) {
             continue;
         }
+
 
         if (lastUnmergedIdx == -1 || current != board[lastUnmergedIdx][colIdx]) {
             lastUnmergedIdx = (int) currIdx;
@@ -55,7 +57,7 @@ void shiftColumn(unsigned **board, size_t dim, size_t colIdx, char command, unsi
             changed = true;
         }
 
-        if (board[currIdx][colIdx] != 0 && emptyTiles > 0) {
+        if (current != 0 && emptyTiles > 0) {
             lastUnmergedIdx = (int) currIdx - direction * emptyTiles;
             swap(current, board[lastUnmergedIdx][colIdx]);
             --emptyTiles;
@@ -75,9 +77,11 @@ void shiftRow(unsigned **board, size_t dim, size_t rowIdx, char command, unsigne
 
     for (size_t col = 1; col < dim; ++col) {
         size_t currIdx = start + direction * col;
+
         if (board[rowIdx][currIdx - direction] == 0) {
             ++emptyTiles;
         }
+
         unsigned &current = board[rowIdx][currIdx];
         if (current == 0) {
             continue;
