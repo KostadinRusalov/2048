@@ -88,7 +88,7 @@ bool isValid(size_t dim) {
 }
 
 char **allocateMatrix(size_t rows, size_t cols) {
-    char** matrix = new char *[rows];
+    char **matrix = new char *[rows];
     for (size_t col = 0; col < rows; ++col) {
         matrix[col] = new char[cols];
     }

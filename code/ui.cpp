@@ -26,7 +26,7 @@ void clearInput() {
     std::cin.ignore(IGNORE_COUNT, IGNORE_DEL);
 }
 
-void invalidCommand() {
+void invalidCommandMessage() {
     std::cout << INVALID_COMMAND_MESSAGE;
 }
 
@@ -46,7 +46,7 @@ void wellPlayed(const char *nickname, unsigned score) {
     std::cout << "well played " << nickname << "!\nyour score is " << score << std::endl;
 }
 
-void emptyLeaderboard() {
+void emptyLeaderboardMessage() {
     std::cout << "leaderboard is empty" << std::endl;
 }
 
@@ -57,14 +57,43 @@ void printScores(const char **nicknames, const unsigned *scores, size_t count) {
     std::cout << std::endl;
 }
 
+void enterNickname(char *nickname) {
+    std::cout << ENTER_NICKNAME_MESSAGE;
+    std::cin.getline(nickname, MAX_NICKNAME_LENGTH);
+
+    while (std::cin.fail()) {
+        std::cout << INVALID_NICKNAME_MESSAGE;
+        std::cout << ENTER_NICKNAME_MESSAGE;
+        clearInput();
+        std::cin.getline(nickname, MAX_NICKNAME_LENGTH);
+    }
+}
+
+size_t enterDimension() {
+    std::cout << ENTER_DIMENSION_MESSAGE;
+    size_t dim;
+    std::cin >> dim;
+
+    while (std::cin.fail() || dim < DIM_LOWER_BOUND || dim > DIM_UPPER_BOUND) {
+        std::cout << INVALID_DIMENSION_MESSAGE;
+        std::cout << ENTER_DIMENSION_MESSAGE;
+        clearInput();
+        std::cin >> dim;
+    }
+
+    return dim;
+}
+
 void printBoard(const unsigned **board, size_t dim, const char *nickname, unsigned score) {
     clearConsole();
     std::cout << nickname << "'s score: " << score << '\n';
+
     for (size_t row = 0; row < dim; ++row) {
         for (size_t col = 0; col < dim - 1; ++col) {
             unsigned tile = board[row][col];
             int digits = digitCount(tile);
 
+            // a known bug
             if (digits >= BOARD_TILE_WIDTH) {
                 BOARD_TILE_WIDTH += 2;
             }

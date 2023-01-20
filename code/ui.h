@@ -28,6 +28,8 @@ const char START_GAME_COMMAND[] = "start game";
 const char LEADERBOARD_COMMAND[] = "leaderboard";
 const char QUIT_COMMAND[] = "quit";
 
+const char QUIT = 'q';
+
 const char START_GAME_COMMAND_N[] = "1";
 const char LEADERBOARD_COMMAND_N[] = "2";
 const char QUIT_COMMAND_N[] = "3";
@@ -47,11 +49,15 @@ void showMenu();
 
 void clearInput();
 
-void invalidCommand();
+size_t enterDimension();
 
-void emptyLeaderboard();
+void invalidCommandMessage();
+
+void emptyLeaderboardMessage();
 
 bool isQuit(const char *);
+
+void enterNickname(char *);
 
 bool isStartGame(const char *);
 

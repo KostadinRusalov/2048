@@ -25,7 +25,6 @@ void showLeaderboard();
 int main() {
     clearConsole();
     showMenu();
-
     char command[COMMAND_LEN];
     std::cin.getline(command, COMMAND_LEN);
 
@@ -35,13 +34,12 @@ int main() {
         } else if (isLeaderboard(command)) {
             showLeaderboard();
         } else {
-            invalidCommand();
+            invalidCommandMessage();
         }
         showMenu();
         clearInput();
         std::cin.getline(command, COMMAND_LEN);
     }
-
     return 0;
 }
 
@@ -49,40 +47,25 @@ void startGame() {
     srand(time(nullptr));
     clearConsole();
 
-    std::cout << ENTER_NICKNAME_MESSAGE;
     char nickname[MAX_NICKNAME_LENGTH];
-    std::cin.getline(nickname, MAX_NICKNAME_LENGTH);
+    enterNickname(nickname);
 
-    while (std::cin.fail()) {
-        std::cout << INVALID_NICKNAME_MESSAGE;
-        std::cout << ENTER_NICKNAME_MESSAGE;
-        clearInput();
-        std::cin.getline(nickname, MAX_NICKNAME_LENGTH);
-    }
+    size_t dim = enterDimension();
 
-    std::cout << ENTER_DIMENSION_MESSAGE;
-    size_t dim;
-    std::cin >> dim;
-
-    while (std::cin.fail() || dim < DIM_LOWER_BOUND || dim > DIM_UPPER_BOUND) {
-        std::cout << INVALID_DIMENSION_MESSAGE;
-        std::cout << ENTER_DIMENSION_MESSAGE;
-        clearInput();
-        std::cin >> dim;
-    }
-
-    // initialize board
     unsigned score = 0;
     bool finished = false;
+
+    // initialize board with two random tiles
     unsigned **board = createBoard(dim);
     addRandomTile(board, dim, finished);
     addRandomTile(board, dim, finished);
+
     printBoard((const unsigned **) board, dim, nickname, score);
 
     char command;
     std::cin >> command;
 
-    while (command != 'q') {
+    while (command != QUIT) {
         moveBoard(board, dim, command, score, finished);
         printBoard((const unsigned **) board, dim, nickname, score);
         if (finished) {
@@ -99,25 +82,16 @@ void startGame() {
 
 void showLeaderboard() {
     clearConsole();
-    size_t dim;
-    std::cout << ENTER_DIMENSION_MESSAGE;
-    std::cin >> dim;
-
-    while (std::cin.fail() || dim < DIM_LOWER_BOUND || dim > DIM_UPPER_BOUND) {
-        std::cout << INVALID_DIMENSION_MESSAGE;
-        std::cout << ENTER_DIMENSION_MESSAGE;
-        clearInput();
-        std::cin >> dim;
-    }
-
+    size_t dim = enterDimension();
     size_t count = 0;
+
     char **nicknames = allocateMatrix(MAX_NICKNAMES_SCORES_COUNT, MAX_NICKNAME_LENGTH);
     unsigned *scores = new unsigned[MAX_NICKNAMES_SCORES_COUNT];
 
     getNicknamesScores(dim, nicknames, scores, count);
 
     if (count == 0) {
-        emptyLeaderboard();
+        emptyLeaderboardMessage();
     } else {
         printScores((const char **) nicknames, (const unsigned *) scores, count);
     }
