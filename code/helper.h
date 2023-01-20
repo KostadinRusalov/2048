@@ -39,11 +39,11 @@ void printSpaces(int);
 
 int compare(const char *, const char *);
 
-char **allocateMatrix(size_t , size_t );
+char **allocateMatrix(size_t, size_t);
 
-void deallocateMatrix(char **, size_t );
+void deallocateMatrix(char **, size_t);
 
-char toChar(size_t );
+char toChar(size_t);
 
 size_t strlen(const char *);
 

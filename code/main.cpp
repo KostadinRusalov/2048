@@ -16,6 +16,7 @@
 #include "ui.h"
 
 int main() {
+    clearConsole();
     showMenu();
     char command[COMMAND_LEN];
     std::cin.getline(command, COMMAND_LEN);

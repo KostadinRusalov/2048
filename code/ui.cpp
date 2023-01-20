@@ -24,7 +24,6 @@ void clearConsole() {
 }
 
 void showMenu() {
-    clearConsole();
     std::cout << COMMAND_MENU << std::endl;
 }
 

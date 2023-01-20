@@ -48,7 +48,6 @@ void shiftColumn(unsigned **board, size_t dim, size_t colIdx, char command, unsi
             continue;
         }
 
-
         if (lastUnmergedIdx == -1 || current != board[lastUnmergedIdx][colIdx]) {
             lastUnmergedIdx = (int) currIdx;
         } else if (current == board[lastUnmergedIdx][colIdx]) {
