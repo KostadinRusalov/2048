@@ -27,71 +27,74 @@ unsigned mergeTiles(unsigned &x, unsigned &y) {
     return y;
 }
 
-void shiftColumn(unsigned **board, size_t dim, size_t colIdx, char cmd, unsigned &score, bool &changed) {
-    if (board == nullptr || colIdx > dim || (cmd != MOVE_UP && cmd != MOVE_DOWN)) {
+void shiftColumn(unsigned **board, size_t dim, size_t colIdx, char command, unsigned &score, bool &changed) {
+    if (board == nullptr || colIdx >= dim || (command != MOVE_UP && command != MOVE_DOWN)) {
         return;
     }
-    size_t start = cmd == MOVE_UP ? 0 : dim - 1;
-    int direction = cmd == MOVE_UP ? 1 : -1;
-    int emptySquares = 0;
-    int lastNonZeroIdx = (int) start;
+    size_t start = command == MOVE_UP ? 0 : dim - 1;
+    int direction = command == MOVE_UP ? 1 : -1;
+    int emptyTiles = 0;
+    int lastUnmergedIdx = (int) start;
 
     for (size_t row = 1; row < dim; ++row) {
         size_t currIdx = start + direction * row;
+
         if (board[currIdx - direction][colIdx] == 0) {
-            ++emptySquares;
+            ++emptyTiles;
         }
-        if (board[currIdx][colIdx] == 0) {
+        unsigned &current = board[currIdx][colIdx];
+        if (current == 0) {
             continue;
         }
 
-        if (lastNonZeroIdx == -1 || board[currIdx][colIdx] != board[lastNonZeroIdx][colIdx]) {
-            lastNonZeroIdx = (int) currIdx;
-        } else if (board[currIdx][colIdx] == board[lastNonZeroIdx][colIdx]) {
-            score += mergeTiles(board[currIdx][colIdx], board[lastNonZeroIdx][colIdx]);
-            lastNonZeroIdx = -1;
+        if (lastUnmergedIdx == -1 || current != board[lastUnmergedIdx][colIdx]) {
+            lastUnmergedIdx = (int) currIdx;
+        } else if (current == board[lastUnmergedIdx][colIdx]) {
+            score += mergeTiles(current, board[lastUnmergedIdx][colIdx]);
+            lastUnmergedIdx = -1;
             changed = true;
         }
 
-        if (board[currIdx][colIdx] != 0 && emptySquares > 0) {
-            lastNonZeroIdx = (int) currIdx - direction * emptySquares;
-            swap(board[currIdx][colIdx], board[lastNonZeroIdx][colIdx]);
-            --emptySquares;
+        if (board[currIdx][colIdx] != 0 && emptyTiles > 0) {
+            lastUnmergedIdx = (int) currIdx - direction * emptyTiles;
+            swap(current, board[lastUnmergedIdx][colIdx]);
+            --emptyTiles;
             changed = true;
         }
     }
 }
 
-void shiftRow(unsigned **board, size_t dim, size_t rowIdx, char cmd, unsigned &score, bool &changed) {
-    if (board == nullptr || rowIdx > dim || (cmd != MOVE_LEFT && cmd != MOVE_RIGHT)) {
+void shiftRow(unsigned **board, size_t dim, size_t rowIdx, char command, unsigned &score, bool &changed) {
+    if (board == nullptr || rowIdx >= dim || (command != MOVE_LEFT && command != MOVE_RIGHT)) {
         return;
     }
-    size_t start = cmd == MOVE_LEFT ? 0 : dim - 1;
-    int direction = cmd == MOVE_LEFT ? 1 : -1;
-    int emptySquares = 0;
-    int lastNonZeroIdx = (int) start;
+    size_t start = command == MOVE_LEFT ? 0 : dim - 1;
+    int direction = command == MOVE_LEFT ? 1 : -1;
+    int emptyTiles = 0;
+    int lastUnmergedIdx = (int) start;
 
     for (size_t col = 1; col < dim; ++col) {
         size_t currIdx = start + direction * col;
         if (board[rowIdx][currIdx - direction] == 0) {
-            ++emptySquares;
+            ++emptyTiles;
         }
-        if (board[rowIdx][currIdx] == 0) {
+        unsigned &current = board[rowIdx][currIdx];
+        if (current == 0) {
             continue;
         }
 
-        if (lastNonZeroIdx == -1 || board[rowIdx][currIdx] != board[rowIdx][lastNonZeroIdx]) {
-            lastNonZeroIdx = (int) currIdx;
-        } else if (board[rowIdx][currIdx] == board[rowIdx][lastNonZeroIdx]) {
-            score += mergeTiles(board[rowIdx][currIdx], board[rowIdx][lastNonZeroIdx]);
-            lastNonZeroIdx = -1;
+        if (lastUnmergedIdx == -1 || current != board[rowIdx][lastUnmergedIdx]) {
+            lastUnmergedIdx = (int) currIdx;
+        } else if (current == board[rowIdx][lastUnmergedIdx]) {
+            score += mergeTiles(current, board[rowIdx][lastUnmergedIdx]);
+            lastUnmergedIdx = -1;
             changed = true;
         }
 
-        if (board[rowIdx][currIdx] != 0 && emptySquares > 0) {
-            lastNonZeroIdx = (int) currIdx - direction * emptySquares;
-            swap(board[rowIdx][currIdx], board[rowIdx][lastNonZeroIdx]);
-            --emptySquares;
+        if (current != 0 && emptyTiles > 0) {
+            lastUnmergedIdx = (int) currIdx - direction * emptyTiles;
+            swap(current, board[rowIdx][lastUnmergedIdx]);
+            --emptyTiles;
             changed = true;
         }
     }
@@ -155,25 +158,25 @@ bool availableMoves(const unsigned **board, size_t dim) {
 
 void addRandomTile(unsigned **board, size_t dim, bool &finished) {
     size_t emptyCount;
-    unsigned *emptySquares = getEmptyTiles((const unsigned **) board, dim, emptyCount);
-    size_t *coords = idxToCoords(emptySquares[randomIdx(emptyCount)]);
+    unsigned *emptyTiles = getEmptyTiles((const unsigned **) board, dim, emptyCount);
+    size_t *coords = idxToCoords(emptyTiles[randomIdx(emptyCount)]);
     board[coords[0]][coords[1]] = randomTile();
-    delete[] emptySquares;
+    delete[] emptyTiles;
     delete[] coords;
     if (emptyCount == 1) {
         finished = !availableMoves((const unsigned **) board, dim);
     }
 }
 
-void moveBoard(unsigned **board, size_t dim, char cmd, unsigned &score, bool &finished) {
+void moveBoard(unsigned **board, size_t dim, char command, unsigned &score, bool &finished) {
     bool changed = false;
-    if (cmd == MOVE_UP || cmd == MOVE_DOWN) {
+    if (command == MOVE_UP || command == MOVE_DOWN) {
         for (size_t colIdx = 0; colIdx < dim; ++colIdx) {
-            shiftColumn(board, dim, colIdx, cmd, score, changed);
+            shiftColumn(board, dim, colIdx, command, score, changed);
         }
-    } else if (cmd == MOVE_LEFT || cmd == MOVE_RIGHT) {
+    } else if (command == MOVE_LEFT || command == MOVE_RIGHT) {
         for (size_t rowIdx = 0; rowIdx < dim; ++rowIdx) {
-            shiftRow(board, dim, rowIdx, cmd, score, changed);
+            shiftRow(board, dim, rowIdx, command, score, changed);
         }
     }
     if (changed) {
