@@ -15,6 +15,8 @@
 #include "ui.h"
 #include "helper.h"
 
+int BOARD_TILE_WIDTH = 6;
+
 void showMenu() {
     std::cout << COMMAND_MENU << std::endl;
 }
@@ -48,4 +50,23 @@ void printScores(const char **nicknames, const unsigned *scores, size_t count) {
         std::cout << idx + 1 << ". " << nicknames[idx] << "'s high score: " << scores[idx] << '\n';
     }
     std::cout << std::endl;
+}
+
+void printBoard(const unsigned **board, size_t dim, const char *nickname, unsigned score) {
+    clearConsole();
+    std::cout << nickname << "'s score: " << score << '\n';
+    for (size_t row = 0; row < dim; ++row) {
+        for (size_t col = 0; col < dim - 1; ++col) {
+            unsigned tile = board[row][col];
+            int digits = digitCount(tile);
+
+            if (digits >= BOARD_TILE_WIDTH) {
+                BOARD_TILE_WIDTH += 2;
+            }
+
+            std::cout << tile;
+            printSpaces(BOARD_TILE_WIDTH - digits);
+        }
+        std::cout << board[row][dim - 1] << std::endl;
+    }
 }

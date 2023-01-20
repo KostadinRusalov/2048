@@ -38,7 +38,7 @@ int main() {
             invalidCommand();
         }
         showMenu();
-        std::cin.ignore();
+        std::cin.ignore(IGNORE_COUNT,IGNORE_DEL);
         std::cin.getline(command, COMMAND_LEN);
     }
 
@@ -80,8 +80,7 @@ void startGame() {
         if (finished) {
             break;
         }
-        std::cin.clear();
-        std::cin.ignore();
+        std::cin.ignore(IGNORE_COUNT,IGNORE_DEL);
         std::cin >> command;
     }
 

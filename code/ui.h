@@ -17,6 +17,9 @@
 #ifndef INC_2048_UI_H
 #define INC_2048_UI_H
 
+const int IGNORE_COUNT = 256;
+const char IGNORE_DEL = '\n';
+
 const int COMMAND_LEN = 12;
 
 const char INVALID_COMMAND_MESSAGE[] = "invalid command!\n";
@@ -53,5 +56,7 @@ bool isLeaderboard(const char *);
 void wellPlayed(const char *, unsigned);
 
 void printScores(const char **, const unsigned *, size_t);
+
+void printBoard(const unsigned **, size_t, const char *, unsigned);
 
 #endif

@@ -71,7 +71,7 @@ void getNicknamesScores(size_t dim, char **nicknames, unsigned *scores, size_t &
 
 void addNicknameScore(char *nickname, unsigned score, char **nicknames, unsigned *scores, size_t &count) {
     if (count == 0) {
-        nicknames[count] = nickname;
+        copy(nickname, nicknames[count]);
         scores[count] = score;
         ++count;
         return;
@@ -82,10 +82,10 @@ void addNicknameScore(char *nickname, unsigned score, char **nicknames, unsigned
     }
 
     if (count == MAX_NICKNAMES_SCORES_COUNT) {
-        nicknames[count - 1] = nickname;
+        copy(nickname, nicknames[count - 1]);
         scores[count - 1] = score;
     } else {
-        nicknames[count] = nickname;
+        copy(nickname, nicknames[count]);
         scores[count] = score;
         ++count;
     }
@@ -128,6 +128,6 @@ void appendLeaderboard(size_t dim, char *nickname, unsigned score) {
     leaderboardFile.close();
 
     delete[] filename;
-//    delete[] scores;
-//    deallocateMatrix(nicknames, MAX_NICKNAMES_SCORES_COUNT);
+    delete[] scores;
+    deallocateMatrix(nicknames, MAX_NICKNAMES_SCORES_COUNT);
 }

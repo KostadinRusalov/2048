@@ -16,8 +16,6 @@
 #include "gameLogic.h"
 #include "helper.h"
 
-int DEFAULT_WIDTH = 6;
-
 const char MOVE_UP = 'w';
 const char MOVE_DOWN = 's';
 const char MOVE_LEFT = 'a';
@@ -182,24 +180,3 @@ void moveBoard(unsigned **board, size_t dim, char cmd, unsigned &score, bool &fi
         addRandomTile(board, dim, finished);
     }
 }
-
-void printBoard(const unsigned **board, size_t dim, const char *nickname, unsigned score) {
-    clearConsole();
-    std::cout << nickname << "'s score: " << score << '\n';
-    for (size_t row = 0; row < dim; ++row) {
-        for (size_t col = 0; col < dim - 1; ++col) {
-            unsigned tile = board[row][col];
-            int digits = digitCount(tile);
-
-            if (digits >= DEFAULT_WIDTH) {
-                DEFAULT_WIDTH += 2;
-            }
-
-            std::cout << tile;
-            printSpaces(DEFAULT_WIDTH - digits);
-        }
-        std::cout << board[row][dim - 1] << '\n';
-    }
-}
-
-
