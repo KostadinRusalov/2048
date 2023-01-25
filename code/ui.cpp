@@ -32,7 +32,7 @@ const char COMMAND_MENU[] = "1. start game\n"
                             "3. quit";
 
 const char ENTER_NICKNAME_MESSAGE[] = "enter nickname: ";
-const char INVALID_NICKNAME_MESSAGE[] = "nickname must be less than 15 characters!\n";
+const char INVALID_NICKNAME_MESSAGE[] = "nickname cannot be more than 15 characters or contain spaces!\n";
 
 const char ENTER_DIMENSION_MESSAGE[] = "enter dimension (between 4 and 10): ";
 const char INVALID_DIMENSION_MESSAGE[] = "invalid dimension!\n";
@@ -83,11 +83,24 @@ void printScores(const char **nicknames, const unsigned *scores, size_t count) {
     std::cout << std::endl;
 }
 
+bool isValid(const char *nickname) {
+    if (nickname == nullptr) {
+        return false;
+    }
+    while (*nickname != '\0') {
+        if (*nickname == ' ') {
+            return false;
+        }
+        ++nickname;
+    }
+    return true;
+}
+
 void enterNickname(char *nickname) {
     std::cout << ENTER_NICKNAME_MESSAGE;
     std::cin.getline(nickname, MAX_NICKNAME_LENGTH);
 
-    while (std::cin.fail()) {
+    while (std::cin.fail() || !isValid(nickname)) {
         std::cout << INVALID_NICKNAME_MESSAGE;
         std::cout << ENTER_NICKNAME_MESSAGE;
         clearInput();
