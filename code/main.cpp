@@ -30,6 +30,7 @@ int main() {
             invalidCommandMessage(command);
         }
         showMenu();
+        clearInput();
         std::cin.getline(command, COMMAND_LEN);
     }
     return 0;

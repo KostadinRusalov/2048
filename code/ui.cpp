@@ -48,7 +48,9 @@ void showMenu() {
 void clearInput() {
     const int IGNORE_COUNT = 256;
     const char IGNORE_DEL = '\n';
-    std::cin.clear();
+    if (std::cin.fail()) {
+        std::cin.clear();
+    }
     std::cin.ignore(IGNORE_COUNT, IGNORE_DEL);
 }
 
@@ -113,7 +115,7 @@ size_t enterDimension() {
     size_t dim;
     std::cin >> dim;
 
-    while (std::cin.fail() || dim < DIM_LOWER_BOUND || dim > DIM_UPPER_BOUND) {
+    while (std::cin.fail() || !isValid(dim)) {
         std::cout << INVALID_DIMENSION_MESSAGE;
         std::cout << ENTER_DIMENSION_MESSAGE;
         clearInput();
@@ -181,7 +183,6 @@ void startGame() {
     appendLeaderboard(dim, nickname, score);
     deleteBoard(board, dim);
     wellPlayed(nickname, score);
-    clearInput();
 }
 
 void showLeaderboard() {
@@ -202,5 +203,4 @@ void showLeaderboard() {
     std::cout << std::endl;
     deallocateMatrix(nicknames, MAX_NICKNAMES_SCORES_COUNT);
     delete[] scores;
-    clearInput();
 }

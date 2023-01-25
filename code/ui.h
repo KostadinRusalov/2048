@@ -21,6 +21,8 @@ const int COMMAND_LEN = 12;
 
 void clearConsole();
 
+void clearInput();
+
 void showMenu();
 
 void startGame();
