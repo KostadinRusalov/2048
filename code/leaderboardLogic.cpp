@@ -17,7 +17,7 @@
 #include "leaderboardLogic.h"
 #include "helper.h"
 
-const size_t MAX_FILENAME_LEN = 34;
+const short MAX_FILENAME_LEN = 34;
 const char DELIMITER = ' ';
 
 const char DIRECTORY[] = "../leaderboards/leaderboard";
@@ -29,18 +29,13 @@ char *getFilename(size_t dim) {
     }
     char *filename = new char[MAX_FILENAME_LEN]();
     concat(filename, DIRECTORY);
-    if (dim == DIM_UPPER_BOUND) {
-        char strDim[] = "10";
-        concat(filename, strDim);
-        concat(filename, TXT_EXTENSION);
-    } else {
-        char strDim[2];
-        strDim[0] = toChar(dim);
-        strDim[1] = '\0';
-        concat(filename, strDim);
-        concat(filename, TXT_EXTENSION);
 
-    }
+    char strDim[2];
+    strDim[0] = toChar(dim % 10);
+    strDim[1] = '\0';
+
+    concat(filename, strDim);
+    concat(filename, TXT_EXTENSION);
     return filename;
 }
 

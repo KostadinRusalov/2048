@@ -138,12 +138,11 @@ unsigned *getEmptyTiles(const unsigned **board, size_t dim, size_t &count) {
 bool availableMoves(const unsigned **board, size_t dim) {
     for (size_t row = 0; row < dim - 1; ++row) {
         for (size_t col = 0; col < dim - 1; ++col) {
-            if (board[row][col] == board[row][col + 1]) {
+            if (board[row][col] == board[row][col + 1]
+                || board[row][col] == board[row + 1][col]) {
                 return true;
             }
-            if (board[row][col] == board[row + 1][col]) {
-                return true;
-            }
+
         }
     }
     for (size_t row = 0; row < dim - 1; ++row) {
@@ -163,9 +162,12 @@ void addRandomTile(unsigned **board, size_t dim, bool &finished) {
     size_t emptyCount;
     unsigned *emptyTiles = getEmptyTiles((const unsigned **) board, dim, emptyCount);
     size_t *coords = idxToCoords(emptyTiles[randomIdx(emptyCount)]);
+
     board[coords[0]][coords[1]] = randomTile();
+
     delete[] emptyTiles;
     delete[] coords;
+
     if (emptyCount == 1) {
         finished = !availableMoves((const unsigned **) board, dim);
     }

@@ -19,6 +19,10 @@
 
 int BOARD_TILE_WIDTH = 6;
 
+const char QUIT = 'q';
+const int IGNORE_COUNT = 256;
+const char IGNORE_DEL = '\n';
+
 const char START_GAME_COMMAND[] = "start game";
 const char LEADERBOARD_COMMAND[] = "leaderboard";
 const char QUIT_COMMAND[] = "quit";
@@ -46,8 +50,6 @@ void showMenu() {
 }
 
 void clearInput() {
-    const int IGNORE_COUNT = 256;
-    const char IGNORE_DEL = '\n';
     if (std::cin.fail()) {
         std::cin.clear();
     }
@@ -134,7 +136,7 @@ void printBoard(const unsigned **board, size_t dim, const char *nickname, unsign
             unsigned tile = board[row][col];
             int digits = digitCount(tile);
 
-            // a known bug
+            // when the default width is changed we board will
             if (digits >= BOARD_TILE_WIDTH) {
                 BOARD_TILE_WIDTH += 2;
             }
@@ -147,8 +149,6 @@ void printBoard(const unsigned **board, size_t dim, const char *nickname, unsign
 }
 
 void startGame() {
-    const char QUIT = 'q';
-
     srand(time(nullptr));
     clearConsole();
 
